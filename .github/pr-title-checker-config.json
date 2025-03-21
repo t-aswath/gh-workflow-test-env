@@ -1,16 +1,21 @@
 {
-  "LABEL": {
-    "name": "",
-    "color": ""
-  },
-  "CHECKS": {
-    "prefixes": ["[ADD]: ", "[FIX]: ", "[DOCS]: ", "[FEAT]: "],
-    "regexp": ".*\s\\(v[0-9]\\)",
-    "regexpFlags": "i",
-  },
-  "MESSAGES": {
-    "success": "PR TITLE :\\)",
-    "failure": "PR TITLE :\\(",
-    "notice": ""
-  }
+    "LABEL": {
+        "name": "",
+        "color": ""
+    },
+    "CHECKS": {
+        "prefixes": [
+            "[ADD]: ",
+            "[FIX]: ",
+            "[DOCS]: ",
+            "[FEAT]: "
+        ],
+        "regexp": ".*\\s\\([0-9]*\\)",
+        "regexpFlags": "i"
+    },
+    "MESSAGES": {
+        "success": "PR TITLE :)",
+        "failure": "PR TITLE :(",
+        "notice": ""
+    }
 }
