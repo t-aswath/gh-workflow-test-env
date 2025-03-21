@@ -21,9 +21,10 @@ jobs:
           configuration_path: .github/pr-title-checker-config.json
 
       - name: comment to fix PR title
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: thollander/actions-comment-pull-request@v1
         if: ${{ steps.check.outputs.success == 'false'}}
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: 'PR title check'
           recreate: true
           message: |
@@ -31,9 +32,10 @@ jobs:
 
       - name: comment that PR title is fixed
         if: ${{ steps.check.outputs.success == 'true'}}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: thollander/actions-comment-pull-request@v1
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           header: 'PR title check'
           recreate: true
           message: |
-              one 5 star added to your bank account 🌟
+              One star added to your bank account 🌟
