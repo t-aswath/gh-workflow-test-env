@@ -1,4 +1,3 @@
-Dear Reviewer, Make sure you tick all these before closing this PR
 ## Checking Statement
 - [ ] Has same title as Leetcode 
 - [ ] Statement correct
