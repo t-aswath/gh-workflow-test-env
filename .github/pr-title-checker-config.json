@@ -9,6 +9,6 @@
     "MESSAGES": {
         "success": "PR TITLE :)",
         "failure": "PR TITLE :(",
-        "notice": ""
+        "notice": "check PR title format"
     }
 }
