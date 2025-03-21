@@ -30,7 +30,7 @@ jobs:
           header: 'PR title check'
           recreate: true
           message: |
-              Be ready for serupu 👠
+              PR title check: Be ready for serupu adi 👠
 
       - name: comment that PR title is fixed
         if: ${{ steps.check.outputs.success == 'true'}}
@@ -40,4 +40,4 @@ jobs:
           header: 'PR title check'
           recreate: true
           message: |
-              One 5 star added to your bank account 🌟
+              PR title check: One 5 star added to your bank account 🌟
