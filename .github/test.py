@@ -102,9 +102,10 @@ def send_to_judge0(source_code, test_input, test_output, language_id):
         #     f.write(f"❌ Error sending request to Judge0: {response.text}\n")
 
 
-def main(argv):
+def main():
     pr_title = os.getenv("PR_TITLE")
     folder_name = re.search(r"\[(ADD|FIX)\]:\s(.*\s\([0-9]*\))", pr_title)
+    folder_name = folder_name.group(2)
 
     num_inputs, inputs, outputs = read_json_results(f"{folder_name}/results.json")
     validate_inputs_outputs(num_inputs, outputs)

@@ -38,3 +38,25 @@ jobs:
         run: |
           echo "$PR_TITLE"
           python .github/test.py
+
+      - name: comment to fix PR title
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.check.outputs.success == 'false'}}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          header: 'PR title check'
+          recreate: true
+          message: |
+              ide.PNA0/checker: Be ready for serupu adi 👠
+              ${{join(steps.run_tests.outputs.*, '\n')}} 
+
+      - name: comment that PR title is fixed
+        if: ${{ steps.check.outputs.success == 'true'}}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          header: 'PR title check'
+          recreate: true
+          message: |
+              ide.PNA0/checker: One 5 star added to your bank account 🌟
+              ${{join(steps.run_tests.outputs.*, '\n')}} 
