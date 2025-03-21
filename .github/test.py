@@ -1,19 +1,23 @@
 import json
-import os
+import re
+import sys
 import requests
 
 
 def read_json_results(file_path):
-    with open(file_path, "r") as file:
-        file_content = file.read()
-        data = json.loads(file_content)
+    try:
+        with open(file_path, "r") as file:
+            file_content = file.read()
+            data = json.loads(file_content)
 
-    num_inputs = file_content.count("input")
+        num_inputs = file_content.count("input")
 
-    inputs = f"{num_inputs}\n" + "\n".join(entry["input"] for entry in data)
-    outputs = "\n".join(entry["output"] for entry in data)
+        inputs = f"{num_inputs}\n" + "\n".join(entry["input"] for entry in data)
+        outputs = "\n".join(entry["output"] for entry in data)
 
-    return num_inputs, inputs, outputs
+        return num_inputs, inputs, outputs
+    except Exception as e:
+        raise Exception(f"Error reading {file_path}: {e}")
 
 
 def validate_inputs_outputs(num_inputs, outputs):
@@ -21,7 +25,7 @@ def validate_inputs_outputs(num_inputs, outputs):
     if num_inputs == len(output_lines):
         print("Validation successful: num_inputs matches number of lines in outputs.")
     else:
-        print(
+        raise Exception(
             f"Validation failed: num_inputs ({num_inputs}) does not match number of output lines ({len(output_lines)})."
         )
 
@@ -33,7 +37,7 @@ def opencode(file_path):
         print("File read successfully.")
         return code
     except Exception as e:
-        print(f"Error reading {file_path}: {e}")
+        raise Exception(f"Error reading {file_path}: {e}")
         return None
 
 
@@ -70,40 +74,43 @@ def send_to_judge0(source_code, test_input, test_output, language_id):
         if judge_output == expected_output:
             print("✅ Test Passed: Judge0 output matches expected output.")
         else:
-            print("❌ Test Failed: Output does not match.")
-            with open(error_log, "w") as f:
-                f.write("Differences:\n")
-                judge_lines = judge_output.split("\n")
-                expected_lines = expected_output.split("\n")
-
-                for i, (j_line, e_line) in enumerate(
-                    zip(judge_lines, expected_lines), start=1
-                ):
-                    if j_line != e_line:
-                        f.write(f"Line {i}:\n")
-                        f.write(f"  Expected: {e_line}\n")
-                        f.write(f"  Got:      {j_line}\n")
-
-                if len(judge_lines) > len(expected_lines):
-                    f.write("\nExtra lines in output:\n")
-                    for i in range(len(expected_lines), len(judge_lines)):
-                        f.write(f"  Line {i+1}: {judge_lines[i]}\n")
-                elif len(judge_lines) < len(expected_lines):
-                    f.write("\nMissing lines in output:\n")
-                    for i in range(len(judge_lines), len(expected_lines)):
-                        f.write(f"  Line {i+1}: {expected_lines[i]}\n")
+            raise Exception("❌ Test Failed: Output does not match.")
+            # with open(error_log, "w") as f:
+            #     f.write("Differences:\n")
+            #     judge_lines = judge_output.split("\n")
+            #     expected_lines = expected_output.split("\n")
+            #
+            #     for i, (j_line, e_line) in enumerate(
+            #         zip(judge_lines, expected_lines), start=1
+            #     ):
+            #         if j_line != e_line:
+            #             f.write(f"Line {i}:\n")
+            #             f.write(f"  Expected: {e_line}\n")
+            #             f.write(f"  Got:      {j_line}\n")
+            #
+            #     if len(judge_lines) > len(expected_lines):
+            #         f.write("\nExtra lines in output:\n")
+            #         for i in range(len(expected_lines), len(judge_lines)):
+            #             f.write(f"  Line {i+1}: {judge_lines[i]}\n")
+            #     elif len(judge_lines) < len(expected_lines):
+            #         f.write("\nMissing lines in output:\n")
+            #         for i in range(len(judge_lines), len(expected_lines)):
+            #             f.write(f"  Line {i+1}: {expected_lines[i]}\n")
     else:
-        with open(error_log, "w") as f:
-            f.write(f"❌ Error sending request to Judge0: {response.text}\n")
+        raise Exception(f"❌ Error sending request to Judge0: {response.text}")
+        # with open(error_log, "w") as f:
+        #     f.write(f"❌ Error sending request to Judge0: {response.text}\n")
 
 
-def main():
-    print(list(os.listdir()))
-    num_inputs, inputs, outputs = read_json_results("../results.json")
+def main(argv):
+    pr_title = argv[0]
+    folder_name = re.search(r"\[(ADD|FIX)\]:\s(.*\s\([0-9]*\))", pr_title)
+
+    num_inputs, inputs, outputs = read_json_results(f"{folder_name}/results.json")
     validate_inputs_outputs(num_inputs, outputs)
-    python_source_code = opencode("code.py")
-    cpp_source_code = opencode("code.cpp")
-    java_source_code = opencode("code.java")
+    python_source_code = opencode(f"{folder_name}/code.py")
+    cpp_source_code = opencode(f"{folder_name}/code.cpp")
+    java_source_code = opencode(f"{folder_name}/code.java")
 
     if python_source_code:
         send_python_to_judge0(python_source_code, inputs, outputs)
@@ -114,4 +121,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
