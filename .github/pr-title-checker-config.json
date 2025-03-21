@@ -10,7 +10,7 @@
             "[DOCS]: ",
             "[FEAT]: "
         ],
-        "regexp": ".*\\s\\([0-9]*\\)",
+        "regexp": "docs\\(v[0-9]\\): ",
         "regexpFlags": "i"
     },
     "MESSAGES": {
