@@ -1,4 +1,4 @@
-name: "PR Title Checker"
+name: "PR title check"
 on:
   pull_request_target:
     types:
@@ -17,3 +17,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           pass_on_octokit_error: false
           configuration_path: .github/pr-title-checker-config.json
+
+      - name: comment to fix PR title
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.check.outputs.success == 'false'}}
+        with:
+          header: 'PR title check'
+          recreate: true
+          message: |
+              Be ready for serupu 👠
+
+      - name: comment that PR title is fixed
+        if: ${{ steps.check.outputs.success == 'true'}}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: 'PR title check'
+          recreate: true
+          message: |
+              One star added to your bank account 🌟
