@@ -99,7 +99,7 @@ def send_to_judge0(source_code, test_input, test_output, language_id):
 
 def main():
     print(list(os.listdir()))
-    num_inputs, inputs, outputs = read_json_results("results.json")
+    num_inputs, inputs, outputs = read_json_results("../results.json")
     validate_inputs_outputs(num_inputs, outputs)
     python_source_code = opencode("code.py")
     cpp_source_code = opencode("code.cpp")
