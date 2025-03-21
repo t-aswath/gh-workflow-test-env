@@ -1,6 +1,6 @@
 import json
 import re
-import sys
+import os
 import requests
 
 
@@ -103,7 +103,7 @@ def send_to_judge0(source_code, test_input, test_output, language_id):
 
 
 def main(argv):
-    pr_title = argv[0]
+    pr_title = os.getenv("PR_TITLE")
     folder_name = re.search(r"\[(ADD|FIX)\]:\s(.*\s\([0-9]*\))", pr_title)
 
     num_inputs, inputs, outputs = read_json_results(f"{folder_name}/results.json")
@@ -121,4 +121,4 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

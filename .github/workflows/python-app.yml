@@ -33,4 +33,6 @@ jobs:
         run: pip install requests
 
       - name: Run tests
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
         run: python .github/test.py
