@@ -3,6 +3,8 @@
 #include <limits>
 using namespace std;
 
+
+
 class Solution {
 public:
     bool canAchieveDivisibleProfit(vector<int>& prices, int k) {
