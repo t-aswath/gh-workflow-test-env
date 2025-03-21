@@ -9,33 +9,32 @@ on:
       - unlabeled
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: thehanimo/pr-title-checker@v1.4.3
-        id: check
-        continue-on-error: true
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          pass_on_octokit_error: false
-          configuration_path: .github/pr-title-checker-config.json
+  runs-on: ubuntu-latest
+  steps:
+    - uses: thehanimo/pr-title-checker@v1.4.3
+      id: check
+      continue-on-error: true
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        pass_on_octokit_error: false
+        configuration_path: .github/pr-title-checker-config.json
 
-      - name: comment to fix PR title
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: ${{ steps.check.outputs.success == 'false'}}
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: 'PR title check'
-          recreate: true
-          message: |
-              Be ready for serupu 👠
+    - name: comment to fix PR title
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: ${{ steps.check.outputs.success == 'false'}}
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        header: 'PR title check'
+        recreate: true
+        message: |
+            Be ready for serupu 👠
 
-      - name: comment that PR title is fixed
-        if: ${{ steps.check.outputs.success == 'true'}}
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: 'PR title check'
-          recreate: true
-          message: |
-              One 5 star added to your bank account 🌟
+    - name: comment that PR title is fixed
+      if: ${{ steps.check.outputs.success == 'true'}}
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        header: 'PR title check'
+        recreate: true
+        message: |
+            One 5 star added to your bank account 🌟
