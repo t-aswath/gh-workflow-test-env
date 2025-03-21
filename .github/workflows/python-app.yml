@@ -35,4 +35,6 @@ jobs:
       - name: Run tests
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
-        run: python .github/test.py
+        run: |
+          echo "$PR_TITLE"
+          python .github/test.py
