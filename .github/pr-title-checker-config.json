@@ -10,8 +10,7 @@
             "[DOCS]: ",
             "[FEAT]: "
         ],
-        "regexp": "docs\\(v[0-9]\\): ",
-        "regexpFlags": "i"
+        "regexp": ".*\\s([0-9]*)",
     },
     "MESSAGES": {
         "success": "PR TITLE :)",
