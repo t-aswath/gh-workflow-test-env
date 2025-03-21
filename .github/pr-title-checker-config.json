@@ -4,13 +4,7 @@
         "color": ""
     },
     "CHECKS": {
-        "prefixes": [
-            "[ADD]: ",
-            "[FIX]: ",
-            "[DOCS]: ",
-            "[FEAT]: "
-        ],
-        "regexp": ".*\\s([0-9]*)",
+        "regexp": "\\[(ADD|FIX|FEAT|DOCS)\\]:\\s.*\\s\\([0-9]*\\)",
     },
     "MESSAGES": {
         "success": "PR TITLE :)",
